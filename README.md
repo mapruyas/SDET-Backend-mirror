@@ -16,3 +16,16 @@ You will need to fork the repository and build the solution in Github **publicly
 Implementation deadline is 1 week. Please let us know the time that you spent to achieve the task.
 
 
+# Deviget SDET coding challenge
+
+## Framework for testing NASA's open api
+
+## How to run
+
+run `gradlew clean test`
+
+## Disabled tests
+
+Some tests are annotated as *Disabled*, those tests are related to item 4 of the challenge and the reason they are annotated as *Disable* is because they do not meet the item 4 criteria.
+
+The criteria that is not meet is because Spirit and Opportunity rovers do not have photos in sol 1000 for camera *Miniature Thermal Emission Spectrometer (Mini-TES)*, then the amount of pictures by ten is not greater than each *Curiosity* camera photos taken the same day. Except for Curiosity *Mast Camera*, which on sol 1000 has 0 photos taken too, so Spirit and Opportunity photos taken by *PANORAMIC CAMERA* by ten is greater than Curiosity photos taken in that day.
