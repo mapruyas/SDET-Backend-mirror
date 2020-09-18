@@ -5,7 +5,6 @@ import com.example.nasa.request.MarsRoverPhotoRequestBuilder;
 import com.example.nasa.response.MarsRoverPhotosResponse;
 import com.example.nasa.response.ResponseInterface;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -37,7 +36,7 @@ public class MarsRoverPhotosTest {
         ResponseInterface<MarsRoverPhotosResponse> response = this.client.getRoverPhotos(request);
         MarsRoverPhotosResponse marsRoverPhotosResponse = response.getBody();
 
-        assertThat(response.getStatusCode(), is(equalTo(200)));
+        assertThat(response.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
         assertThat(marsRoverPhotosResponse.getPhotos().size(), is(equalTo(10)));
         marsRoverPhotosResponse.getPhotos().forEach((photo) -> {
             assertThat(photo.getRover().getName(), is(equalTo("Curiosity")));
@@ -60,7 +59,7 @@ public class MarsRoverPhotosTest {
         ResponseInterface<MarsRoverPhotosResponse> response = this.client.getRoverPhotos(request);
         MarsRoverPhotosResponse marsRoverPhotosResponse = response.getBody();
 
-        assertThat(response.getStatusCode(), is(equalTo(200)));
+        assertThat(response.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
         assertThat(marsRoverPhotosResponse.getPhotos().size(), is(equalTo(10)));
         marsRoverPhotosResponse.getPhotos().forEach((photo) -> {
             assertThat(photo.getRover().getName(), is(equalTo("Curiosity")));
@@ -93,9 +92,9 @@ public class MarsRoverPhotosTest {
         ResponseInterface<MarsRoverPhotosResponse> responseByEarthDate = this.client.getRoverPhotos(requestByEarthDate);
         MarsRoverPhotosResponse photosByDate = responseByEarthDate.getBody();
 
-        assertThat(responseBySol.getStatusCode(), is(equalTo(200)));
+        assertThat(responseBySol.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
         assertThat(photosBySol.getPhotos().size(), is(equalTo(10)));
-        assertThat(responseByEarthDate.getStatusCode(), is(equalTo(200)));
+        assertThat(responseByEarthDate.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
         assertThat(photosByDate.getPhotos().size(), is(equalTo(10)));
 
         assertThat(photosBySol.getPhotos(), is(photosByDate.getPhotos()));
