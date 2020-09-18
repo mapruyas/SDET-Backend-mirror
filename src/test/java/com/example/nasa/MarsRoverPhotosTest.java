@@ -22,8 +22,8 @@ public class MarsRoverPhotosTest {
 
     @BeforeEach
     public void setUp() {
-        String apiKey = "BPLiItfYP3AF5cTMZGUoXuQr7U7FaEpb3OugIlLY";
-        this.client = new NASAApiService("https://api.nasa.gov", apiKey);
+        Configuration configuration = new Configuration();
+        this.client = new NASAApiService(configuration.getNASAApiBaseUrl(), configuration.getNASAApiKey());
     }
 
     @Test
@@ -106,6 +106,7 @@ public class MarsRoverPhotosTest {
     public void curiosityCamerasShouldNotHaveMorePicturesThanTenTimesOtherRoversCameras(
             RoverCamera curiosityCamera, RoverName roverToCompareName, RoverCamera otherRoverCamera
     ) {
+        int amountOfTimesToCompare = 10;
         MarsRoverPhotoRequest curiosityRequest = new MarsRoverPhotoRequestBuilder()
                 .setRover(RoverName.CURIOSITY)
                 .setSol(1000)
@@ -127,6 +128,6 @@ public class MarsRoverPhotosTest {
         MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
         MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
-        assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
+        assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * amountOfTimesToCompare)));
     }
 }

@@ -22,10 +22,17 @@ Implementation deadline is 1 week. Please let us know the time that you spent to
 
 ## How to run
 
-run `gradlew clean test`
+### Optional
+if you want to configure the tests with your own NASA api key flow this steps
 
-## Disabled tests
+run `cp .env.example .env` and replace *you-nasa-api-key* with your own
 
-Some tests are annotated as *Disabled*, those tests are related to item 4 of the challenge and the reason they are annotated as *Disable* is because they do not meet the item 4 criteria.
+### Run tests
 
-The criteria that is not meet is because Spirit and Opportunity rovers do not have photos in sol 1000 for camera *Miniature Thermal Emission Spectrometer (Mini-TES)*, then the amount of pictures by ten is not greater than each *Curiosity* camera photos taken the same day. Except for Curiosity *Mast Camera*, which on sol 1000 has 0 photos taken too, so Spirit and Opportunity photos taken by *PANORAMIC CAMERA* by ten is greater than Curiosity photos taken in that day.
+run `./gradlew clean test`
+
+## Failing tests
+
+Some tests are failing, they are related to item 4 of the challenge and the reason they are failing is because they do not meet the item 4 criteria.
+
+The criteria is not meet because Spirit and Opportunity rovers do not have photos in sol 1000 for camera *Miniature Thermal Emission Spectrometer (Mini-TES)*, then the amount of pictures by ten is not greater than each *Curiosity* camera photos taken the same day. Except for Curiosity *Mast Camera*, which on sol 1000 has 0 photos taken too, so Spirit and Opportunity photos taken by *PANORAMIC CAMERA* by ten is greater than Curiosity photos taken in that day.
