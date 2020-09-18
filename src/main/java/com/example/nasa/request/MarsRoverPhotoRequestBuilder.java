@@ -2,14 +2,16 @@ package com.example.nasa.request;
 
 import com.example.nasa.RoverCamera;
 import com.example.nasa.RoverName;
-import org.glassfish.jersey.internal.guava.Maps;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MarsRoverPhotoRequestBuilder {
 
     private RoverName rover;
-    HashMap<String, Object> parameters = new HashMap<>();
+    private final HashMap<String, Object> parameters = new HashMap<>();
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public MarsRoverPhotoRequestBuilder() {}
 
@@ -23,8 +25,8 @@ public class MarsRoverPhotoRequestBuilder {
         return this;
     }
 
-    public MarsRoverPhotoRequestBuilder setEarthDate(String earthDate) {
-        parameters.put("earth_date", earthDate);
+    public MarsRoverPhotoRequestBuilder setEarthDate(Date earthDate) {
+        parameters.put("earth_date", simpleDateFormat.format(earthDate));
         return this;
     }
 

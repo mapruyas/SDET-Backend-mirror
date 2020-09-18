@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
+import java.util.Calendar;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -44,9 +45,12 @@ public class MarsRoverPhotosTest {
 
     @Test
     public void shouldGetFirst10PhotosTakenByCuriosityOnGivenEarthDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2015, Calendar.MAY, 30);
+
         MarsRoverPhotoRequest request = new MarsRoverPhotoRequestBuilder()
                 .setRover(RoverName.CURIOSITY)
-                .setEarthDate("2015-05-30")
+                .setEarthDate(calendar.getTime())
                 .setPage(1)
                 .setPerPage(10)
                 .build();
@@ -71,9 +75,12 @@ public class MarsRoverPhotosTest {
                 .setPerPage(10)
                 .build();
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2015, Calendar.MAY, 30);
+
         MarsRoverPhotoRequest requestByEarthDate = new MarsRoverPhotoRequestBuilder()
                 .setRover(RoverName.CURIOSITY)
-                .setEarthDate("2015-05-30")
+                .setEarthDate(calendar.getTime())
                 .setPage(1)
                 .setPerPage(10)
                 .build();
