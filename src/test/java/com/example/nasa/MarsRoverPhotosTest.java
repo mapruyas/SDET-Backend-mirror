@@ -3,6 +3,7 @@ package com.example.nasa;
 import com.example.nasa.request.MarsRoverPhotoRequest;
 import com.example.nasa.request.MarsRoverPhotoRequestBuilder;
 import com.example.nasa.response.MarsRoverPhotosResponse;
+import com.example.nasa.response.ResponseInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -30,10 +31,10 @@ public class MarsRoverPhotosTest {
                 .setPerPage(10)
                 .setSol(1000)
                 .build();
-        Response response = this.client.getRoverPhotos(request);
-        MarsRoverPhotosResponse marsRoverPhotosResponse = response.readEntity(MarsRoverPhotosResponse.class);
+        ResponseInterface<MarsRoverPhotosResponse> response = this.client.getRoverPhotos(request);
+        MarsRoverPhotosResponse marsRoverPhotosResponse = response.getBody();
 
-        assertThat(response.getStatus(), is(equalTo(200)));
+        assertThat(response.getStatusCode(), is(equalTo(200)));
         assertThat(marsRoverPhotosResponse.getPhotos().size(), is(equalTo(10)));
         marsRoverPhotosResponse.getPhotos().forEach((photo) -> {
             assertThat(photo.getRover().getName(), is(equalTo("Curiosity")));
@@ -50,10 +51,10 @@ public class MarsRoverPhotosTest {
                 .setPerPage(10)
                 .build();
 
-        Response response = this.client.getRoverPhotos(request);
-        MarsRoverPhotosResponse marsRoverPhotosResponse = response.readEntity(MarsRoverPhotosResponse.class);
+        ResponseInterface<MarsRoverPhotosResponse> response = this.client.getRoverPhotos(request);
+        MarsRoverPhotosResponse marsRoverPhotosResponse = response.getBody();
 
-        assertThat(response.getStatus(), is(equalTo(200)));
+        assertThat(response.getStatusCode(), is(equalTo(200)));
         assertThat(marsRoverPhotosResponse.getPhotos().size(), is(equalTo(10)));
         marsRoverPhotosResponse.getPhotos().forEach((photo) -> {
             assertThat(photo.getRover().getName(), is(equalTo("Curiosity")));
@@ -77,15 +78,15 @@ public class MarsRoverPhotosTest {
                 .setPerPage(10)
                 .build();
 
-        Response responseBySol = this.client.getRoverPhotos(requestBySol);
-        MarsRoverPhotosResponse photosBySol = responseBySol.readEntity(MarsRoverPhotosResponse.class);
+        ResponseInterface<MarsRoverPhotosResponse> responseBySol = this.client.getRoverPhotos(requestBySol);
+        MarsRoverPhotosResponse photosBySol = responseBySol.getBody();
 
-        Response responseByEarthDate = this.client.getRoverPhotos(requestByEarthDate);
-        MarsRoverPhotosResponse photosByDate = responseByEarthDate.readEntity(MarsRoverPhotosResponse.class);
+        ResponseInterface<MarsRoverPhotosResponse> responseByEarthDate = this.client.getRoverPhotos(requestByEarthDate);
+        MarsRoverPhotosResponse photosByDate = responseByEarthDate.getBody();
 
-        assertThat(responseBySol.getStatus(), is(equalTo(200)));
+        assertThat(responseBySol.getStatusCode(), is(equalTo(200)));
         assertThat(photosBySol.getPhotos().size(), is(equalTo(10)));
-        assertThat(responseByEarthDate.getStatus(), is(equalTo(200)));
+        assertThat(responseByEarthDate.getStatusCode(), is(equalTo(200)));
         assertThat(photosByDate.getPhotos().size(), is(equalTo(10)));
 
         assertThat(photosBySol.getPhotos(), is(photosByDate.getPhotos()));
@@ -105,14 +106,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -131,14 +132,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -158,14 +159,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -185,14 +186,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -211,14 +212,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -237,14 +238,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -264,14 +265,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -291,14 +292,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -318,14 +319,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -345,14 +346,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -372,14 +373,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -399,14 +400,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -425,14 +426,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -451,14 +452,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -478,14 +479,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -505,14 +506,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -531,14 +532,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -557,14 +558,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -584,14 +585,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -611,14 +612,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -637,14 +638,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -663,14 +664,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -690,14 +691,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -717,14 +718,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -743,14 +744,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -769,14 +770,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.PANORAMIC_CAMERA)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }
@@ -796,14 +797,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> opportunityPhotos = this.client.getRoverPhotos(opportunityRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(opportunityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(opportunityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse opportunityPhotosResponse = opportunityPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(opportunityPhotosResponse.getPhotos().size() * 10)));
     }
@@ -823,14 +824,14 @@ public class MarsRoverPhotosTest {
                 .setCamera(RoverCamera.MINIATURE_THERMAL_EMISSION_SPECTROMETER)
                 .build();
 
-        Response curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
-        Response spiritPhotos = this.client.getRoverPhotos(spiritRequest);
+        ResponseInterface<MarsRoverPhotosResponse> curiosityPhotos = this.client.getRoverPhotos(curiosityRequest);
+        ResponseInterface<MarsRoverPhotosResponse> spiritPhotos = this.client.getRoverPhotos(spiritRequest);
 
-        assertThat(curiosityPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
-        assertThat(spiritPhotos.getStatus(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(curiosityPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
+        assertThat(spiritPhotos.getStatusCode(), is(equalTo(Response.Status.OK.getStatusCode())));
 
-        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.readEntity(MarsRoverPhotosResponse.class);
-        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.readEntity(MarsRoverPhotosResponse.class);
+        MarsRoverPhotosResponse curiosityPhotosResponse = curiosityPhotos.getBody();
+        MarsRoverPhotosResponse spiritPhotosResponse = spiritPhotos.getBody();
 
         assertThat(curiosityPhotosResponse.getPhotos().size(), is(lessThanOrEqualTo(spiritPhotosResponse.getPhotos().size() * 10)));
     }

@@ -1,6 +1,9 @@
 package com.example.nasa;
 
 import com.example.nasa.request.MarsRoverPhotoRequest;
+import com.example.nasa.response.MarsRoverPhotosResponse;
+import com.example.nasa.response.ResponseInterface;
+import com.example.nasa.response.RestResponse;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -21,7 +24,7 @@ public class NASAApiService {
         this.client = ClientBuilder.newClient();
     }
 
-    public Response getRoverPhotos(MarsRoverPhotoRequest request) {
+    public ResponseInterface<MarsRoverPhotosResponse> getRoverPhotos(MarsRoverPhotoRequest request) {
         WebTarget webTarget = this.client
                 .target(baseUrl)
                 .path(Routes.getMarsRoverPhotosPathForRover(request.getRover()))
@@ -31,8 +34,10 @@ public class NASAApiService {
             webTarget = webTarget.queryParam(queryParam.getKey(), queryParam.getValue());
         }
 
-        return webTarget
+        Response response = webTarget
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
+
+        return new RestResponse(MarsRoverPhotosResponse.class, response);
     }
 }
