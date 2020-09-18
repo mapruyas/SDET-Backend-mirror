@@ -1,15 +1,16 @@
 package com.example.nasa.request;
 
+import com.example.nasa.RoverName;
 import org.glassfish.jersey.internal.guava.Maps;
 
 import java.util.HashMap;
 
 public class MarsRoverPhotoRequest {
 
-    private final String rover;
+    private final RoverName rover;
     private HashMap<String, Object> queryParams = Maps.newHashMapWithExpectedSize(4);
 
-    public MarsRoverPhotoRequest(String rover, HashMap<String, Object> queryParams) {
+    public MarsRoverPhotoRequest(RoverName rover, HashMap<String, Object> queryParams) {
         this.rover = rover;
         this.queryParams = queryParams;
     }
@@ -18,7 +19,7 @@ public class MarsRoverPhotoRequest {
         return queryParams;
     }
 
-    public String getRover() {
+    public RoverName getRover() {
         return rover;
     }
 }

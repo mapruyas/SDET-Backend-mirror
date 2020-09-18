@@ -24,7 +24,7 @@ public class NASAApiService {
     public Response getRoverPhotos(MarsRoverPhotoRequest request) {
         WebTarget webTarget = this.client
                 .target(baseUrl)
-                .path(String.format("/mars-photos/api/v1/rovers/%s/photos", request.getRover()))
+                .path(Routes.getMarsRoverPhotosPathForRover(request.getRover()))
                 .queryParam("api_key", this.apiKey);
 
         for (Map.Entry<String, Object> queryParam: request.getQueryParams().entrySet()) {

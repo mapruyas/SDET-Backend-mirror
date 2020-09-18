@@ -8,13 +8,13 @@ import java.util.HashMap;
 
 public class MarsRoverPhotoRequestBuilder {
 
-    private String rover;
+    private RoverName rover;
     HashMap<String, Object> parameters = new HashMap<>();
 
     public MarsRoverPhotoRequestBuilder() {}
 
     public MarsRoverPhotoRequestBuilder setRover(RoverName name) {
-        this.rover = name.toString();
+        this.rover = name;
         return this;
     }
 
