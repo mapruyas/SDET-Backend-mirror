@@ -23,7 +23,7 @@ Implementation deadline is 1 week. Please let us know the time that you spent to
 ## How to run
 
 ### Optional
-if you want to configure the tests with your own NASA api key flow this steps
+if you want to configure the tests with your own NASA api key follow this steps
 
 run `cp .env.example .env` and replace *you-nasa-api-key* with your own
 
