@@ -4,7 +4,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class Configuration {
 
-    private final Dotenv dotenv = Dotenv.load();
+    private final Dotenv dotenv = Dotenv
+            .configure()
+            .ignoreIfMissing()
+            .load();
 
     public Configuration() {}
 

@@ -38,6 +38,6 @@ public class NASAApiService {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        return new RestResponse(MarsRoverPhotosResponse.class, response);
+        return new RestResponse<>(MarsRoverPhotosResponse.class, response);
     }
 }
